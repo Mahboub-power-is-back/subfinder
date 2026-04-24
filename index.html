@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subdomain Finder - كاشف النطاقات الفرعية</title>
+    <title>Subdomain Finder Pro | Mahboub Million</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -14,50 +14,60 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             min-height: 100vh;
             color: #fff;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 0;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            background: linear-gradient(90deg, #00d4ff, #ff6a00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        header p {
-            color: #a0a0a0;
-            font-size: 1.1rem;
+        .owner-badge {
+            display: inline-block;
+            background: rgba(255, 106, 0, 0.2);
+            border: 1px solid #ff6a00;
+            border-radius: 50px;
+            padding: 5px 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .owner-badge i {
+            color: #ff6a00;
+            margin-right: 8px;
         }
 
         .search-box {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
             margin: 20px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .input-group {
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .input-group input {
@@ -69,6 +79,7 @@
             color: #fff;
             font-size: 1.1rem;
             transition: all 0.3s;
+            min-width: 200px;
         }
 
         .input-group input:focus {
@@ -77,23 +88,27 @@
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
 
-        .input-group input::placeholder {
-            color: #666;
-        }
-
         .btn {
-            padding: 15px 40px;
+            padding: 15px 30px;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            background: linear-gradient(135deg, #00d4ff, #ff6a00);
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
         }
 
         .btn:hover {
@@ -101,52 +116,45 @@
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
         }
 
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .tools-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
         .stat-card i {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #00d4ff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ff6a00;
         }
 
         .stat-card h3 {
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-
-        .stat-card p {
-            color: #a0a0a0;
+            font-size: 1.8rem;
         }
 
         .results {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             margin: 20px 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: none;
@@ -160,87 +168,104 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .results-header h2 {
+        .btn-group {
             display: flex;
-            align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .results-header h2 i {
-            color: #00d4ff;
+        .copy-btn, .export-btn, .ip-lookup-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .copy-btn {
+            background: #2c3e50;
+            color: #fff;
         }
 
         .export-btn {
-            padding: 10px 20px;
-            border: 2px solid #00d4ff;
-            border-radius: 8px;
-            background: transparent;
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .ip-lookup-btn {
+            background: #8e44ad;
+            color: #fff;
+        }
+
+        .subdomain-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 212, 255, 0.1);
+            font-weight: bold;
             color: #00d4ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
         }
 
-        .export-btn:hover {
-            background: #00d4ff;
-            color: #1a1a2e;
-        }
-
-        .subdomain-list {
-            list-style: none;
-        }
-
-        .subdomain-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            margin-bottom: 10px;
+        tr:hover {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
         }
 
-        .subdomain-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(0, 212, 255, 0.3);
-            transform: translateX(-5px);
-        }
-
-        .subdomain-name {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            color: #00d4ff;
-        }
-
-        .subdomain-meta {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .badge {
-            padding: 5px 12px;
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
         }
 
-        .badge.active {
-            background: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
+        .status-up {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
         }
 
-        .badge.cloudflare {
+        .status-down {
+            background: rgba(255, 50, 50, 0.2);
+            color: #ff4444;
+        }
+
+        .status-unknown {
             background: rgba(255, 165, 0, 0.2);
             color: #ffa500;
         }
+
+        .action-icons i {
+            margin: 0 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-icons i:hover {
+            transform: scale(1.1);
+        }
+
+        .fa-copy:hover { color: #00d4ff; }
+        .fa-chart-line:hover { color: #ff6a00; }
 
         .loading {
             text-align: center;
@@ -253,10 +278,10 @@
         }
 
         .spinner {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #00d4ff;
+            border-top-color: #ff6a00;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -270,9 +295,9 @@
             background: rgba(255, 0, 0, 0.1);
             border: 1px solid rgba(255, 0, 0, 0.3);
             color: #ff6b6b;
-            padding: 20px;
+            padding: 15px;
             border-radius: 12px;
-            margin: 20px 0;
+            margin: 15px 0;
             display: none;
         }
 
@@ -280,76 +305,14 @@
             display: block;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            color: #666;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 40px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin: 20px 0;
-            overflow: hidden;
-            display: none;
-        }
-
-        .progress-bar.active {
-            display: block;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .input-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .subdomain-item {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-        }
-
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #00ff88;
-            color: #1a1a2e;
-            padding: 15px 30px;
+            background: #ff6a00;
+            color: #fff;
+            padding: 12px 24px;
             border-radius: 10px;
             font-weight: bold;
             opacity: 0;
@@ -361,265 +324,376 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+            .btn {
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-network-wired"></i> Subdomain Finder</h1>
-            <p>اكتشف جميع النطاقات الفرعية لأي موقع باستخدام تقنيات متعددة</p>
+            <h1><i class="fas fa-network-wired"></i> Subdomain Finder Pro</h1>
+            <div class="owner-badge">
+                <i class="fas fa-crown"></i> Created by: Mahboub Million Owner
+            </div>
+            <p>Discover subdomains, resolve IPs, check status & export results</p>
         </header>
 
         <div class="search-box">
             <div class="input-group">
-                <input type="text" id="domainInput" placeholder="أدخل النطاق (مثال: example.com)" autocomplete="off">
+                <input type="text" id="domainInput" placeholder="Enter domain (e.g., example.com)" autocomplete="off">
                 <button class="btn" id="searchBtn" onclick="findSubdomains()">
-                    <i class="fas fa-search"></i>
-                    بحث
+                    <i class="fas fa-search"></i> Find Subdomains
                 </button>
             </div>
-            
-            <div class="progress-bar" id="progressBar">
-                <div class="progress-fill" id="progressFill"></div>
+
+            <div class="tools-bar">
+                <input type="text" id="ipInput" placeholder="IP to Hostname (e.g., 8.8.8.8)" style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+                <button class="btn btn-secondary" onclick="reverseIPLookup()">
+                    <i class="fas fa-exchange-alt"></i> IP → Hostname
+                </button>
+                <button class="btn btn-secondary" onclick="copyAllSubdomains()">
+                    <i class="fas fa-copy"></i> Copy All
+                </button>
+                <button class="btn btn-secondary" onclick="exportTXT()">
+                    <i class="fas fa-file-alt"></i> Export .txt
+                </button>
+                <button class="btn btn-secondary" onclick="exportCSV()">
+                    <i class="fas fa-table"></i> Export CSV
+                </button>
             </div>
 
             <div class="stats" id="stats" style="display: none;">
                 <div class="stat-card">
                     <i class="fas fa-globe"></i>
                     <h3 id="totalCount">0</h3>
-                    <p>إجمالي النطاقات</p>
+                    <p>Total Found</p>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-check-circle"></i>
-                    <h3 id="activeCount">0</h3>
-                    <p>نشطة</p>
+                    <h3 id="aliveCount">0</h3>
+                    <p>Alive (200)</p>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3 id="cloudflareCount">0</h3>
-                    <p>Cloudflare</p>
+                    <i class="fas fa-server"></i>
+                    <h3 id="ipCount">0</h3>
+                    <p>Resolved IPs</p>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-clock"></i>
                     <h3 id="timeCount">0s</h3>
-                    <p>الوقت</p>
+                    <p>Time Taken</p>
                 </div>
             </div>
         </div>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>جاري البحث عن النطاقات الفرعية...</p>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">قد يستغرق الأمر بضع ثوانٍ</p>
+            <p>Scanning for subdomains & resolving IPs...</p>
         </div>
 
         <div class="error" id="error">
             <i class="fas fa-exclamation-triangle"></i>
-            <span id="errorText">حدث خطأ أثناء البحث</span>
+            <span id="errorText">Error occurred</span>
         </div>
 
         <div class="results" id="results">
             <div class="results-header">
-                <h2><i class="fas fa-list"></i> النتائج</h2>
-                <button class="export-btn" onclick="exportResults()">
-                    <i class="fas fa-download"></i> تصدير TXT
-                </button>
+                <h2><i class="fas fa-list-ul"></i> Results (Subdomain | IP | Status)</h2>
+                <div class="btn-group">
+                    <button class="copy-btn" onclick="copyAllSubdomains()"><i class="fas fa-copy"></i> Copy All</button>
+                    <button class="export-btn" onclick="exportTXT()"><i class="fas fa-file-alt"></i> TXT</button>
+                    <button class="export-btn" onclick="exportCSV()"><i class="fas fa-table"></i> CSV</button>
+                </div>
             </div>
-            <ul class="subdomain-list" id="subdomainList"></ul>
+            <div class="subdomain-table">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Subdomain</th>
+                            <th>IP Address</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="empty-state" id="emptyState">
-            <i class="fas fa-search"></i>
-            <h3>ابدأ البحث</h3>
-            <p>أدخل اسم النطاق أعلاه لاكتشاف النطاقات الفرعية</p>
-        </div>
+        <footer>
+            <p><i class="fas fa-shield-alt"></i> Subdomain Finder Pro | Mahboub Million Security Tools</p>
+            <p style="font-size:0.8rem;">Uses Certificate Transparency Logs & DNS Enumeration | Data for security research only</p>
+        </footer>
     </div>
 
-    <div class="toast" id="toast">تم التصدير بنجاح!</div>
-
-    <footer>
-        <p>Subdomain Finder - أداة اكتشاف النطاقات الفرعية</p>
-        <p style="margin-top: 10px; font-size: 0.9rem;">تستخدم Certificate Transparency Logs و DNS Enumeration</p>
-    </footer>
+    <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
-        let currentResults = [];
+        let currentData = []; // Store {subdomain, ip, status}
 
-        // API endpoints مجانية لجلب النطاقات الفرعية
-        const API_SOURCES = [
-            {
-                name: 'crt.sh',
-                url: (domain) => `https://crt.sh/?q=%.${domain}&output=json`,
-                parser: (data) => {
-                    const subs = new Set();
-                    data.forEach(entry => {
-                        const names = entry.name_value.split('\n');
-                        names.forEach(name => {
-                            const clean = name.trim().toLowerCase();
-                            if (clean && clean.endsWith(domain) && clean !== domain) {
-                                subs.add(clean);
-                            }
-                        });
+        // API Sources
+        async function fetchFromCRT(domain) {
+            try {
+                const res = await fetch(`https://crt.sh/?q=%.${domain}&output=json`);
+                const data = await res.json();
+                const subs = new Set();
+                data.forEach(entry => {
+                    const names = entry.name_value.split('\n');
+                    names.forEach(name => {
+                        let clean = name.trim().toLowerCase();
+                        if (clean && clean.endsWith(domain) && clean !== domain) {
+                            subs.add(clean);
+                        }
                     });
-                    return Array.from(subs);
+                });
+                return Array.from(subs);
+            } catch(e) { return []; }
+        }
+
+        async function fetchFromHackerTarget(domain) {
+            try {
+                const res = await fetch(`https://api.hackertarget.com/hostsearch/?q=${domain}`);
+                const text = await res.text();
+                if (text.includes('error')) return [];
+                return text.split('\n').map(line => line.split(',')[0]).filter(s => s && s.includes('.'));
+            } catch(e) { return []; }
+        }
+
+        async function resolveIP(subdomain) {
+            try {
+                const res = await fetch(`https://dns.google/resolve?name=${subdomain}&type=A`);
+                const data = await res.json();
+                if (data.Answer && data.Answer.length > 0) {
+                    const ip = data.Answer[0].data;
+                    return ip;
                 }
-            },
-            {
-                name: 'SecurityTrails (Free)',
-                url: (domain) => `https://api.hackertarget.com/hostsearch/?q=${domain}`,
-                parser: (text) => {
-                    if (text.includes('error')) return [];
-                    return text.split('\n')
-                        .map(line => line.split(',')[0])
-                        .filter(sub => sub && sub.includes('.'));
-                }
+                return 'No A Record';
+            } catch(e) {
+                return 'DNS Error';
             }
-        ];
+        }
+
+        async function checkStatus(url) {
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 5000);
+                const res = await fetch(`https://${url}`, { method: 'HEAD', mode: 'no-cors', signal: controller.signal });
+                clearTimeout(timeout);
+                return 'Alive (200)';
+            } catch(e) {
+                return 'Down/Timeout';
+            }
+        }
 
         async function findSubdomains() {
             const domain = document.getElementById('domainInput').value.trim();
-            const loading = document.getElementById('loading');
-            const results = document.getElementById('results');
-            const error = document.getElementById('error');
-            const emptyState = document.getElementById('emptyState');
-            const stats = document.getElementById('stats');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const searchBtn = document.getElementById('searchBtn');
-
             if (!domain) {
-                showError('الرجاء إدخال نطاق صالح');
+                showError('Please enter a valid domain');
                 return;
             }
 
-            // إعادة تعيين
-            loading.classList.add('active');
-            results.classList.remove('active');
-            error.classList.remove('active');
-            emptyState.style.display = 'none';
-            stats.style.display = 'none';
-            progressBar.classList.add('active');
-            searchBtn.disabled = true;
-            currentResults = [];
-
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('error').classList.remove('active');
+            document.getElementById('stats').style.display = 'none';
+            document.getElementById('searchBtn').disabled = true;
+            
             const startTime = Date.now();
 
             try {
-                const allSubdomains = new Set();
+                // Fetch from multiple sources
+                const [crtSubs, htSubs] = await Promise.all([
+                    fetchFromCRT(domain),
+                    fetchFromHackerTarget(domain)
+                ]);
                 
-                // جلب من المصادر المختلفة
-                for (let i = 0; i < API_SOURCES.length; i++) {
-                    const source = API_SOURCES[i];
-                    progressFill.style.width = `${((i + 1) / API_SOURCES.length) * 100}%`;
+                let allSubs = new Set([...crtSubs, ...htSubs]);
+                let subdomainArray = Array.from(allSubs).sort();
+                
+                if (subdomainArray.length === 0) {
+                    showError('No subdomains found. Try a different domain.');
+                    document.getElementById('loading').classList.remove('active');
+                    document.getElementById('searchBtn').disabled = false;
+                    return;
+                }
+
+                // Resolve IPs and check status for each (limit to 50 for performance)
+                const limited = subdomainArray.slice(0, 80);
+                currentData = [];
+                
+                let aliveCount = 0;
+                let resolvedCount = 0;
+                
+                for (let i = 0; i < limited.length; i++) {
+                    const sub = limited[i];
+                    const ip = await resolveIP(sub);
+                    if (ip !== 'No A Record' && ip !== 'DNS Error') resolvedCount++;
+                    const status = await checkStatus(sub);
+                    if (status.includes('Alive')) aliveCount++;
                     
-                    try {
-                        const response = await fetch(source.url(domain));
-                        let data;
-                        
-                        if (source.name === 'crt.sh') {
-                            data = await response.json();
-                        } else {
-                            data = await response.text();
-                        }
-                        
-                        const subs = source.parser(data);
-                        subs.forEach(sub => allSubdomains.add(sub));
-                    } catch (e) {
-                        console.warn(`فشل في جلب البيانات من ${source.name}:`, e);
-                    }
+                    currentData.push({
+                        subdomain: sub,
+                        ip: ip,
+                        status: status
+                    });
+                    
+                    // Update progress in UI
+                    document.getElementById('totalCount').innerText = limited.length;
+                    document.getElementById('aliveCount').innerText = aliveCount;
+                    document.getElementById('ipCount').innerText = resolvedCount;
                 }
-
-                const subdomains = Array.from(allSubdomains).sort();
-                currentResults = subdomains;
-
-                const endTime = Date.now();
-                const duration = ((endTime - startTime) / 1000).toFixed(1);
-
-                // تحديث الإحصائيات
-                document.getElementById('totalCount').textContent = subdomains.length;
-                document.getElementById('activeCount').textContent = subdomains.length;
-                document.getElementById('cloudflareCount').textContent = '0';
-                document.getElementById('timeCount').textContent = duration + 's';
-                stats.style.display = 'grid';
-
-                if (subdomains.length === 0) {
-                    showError('لم يتم العثور على نطاقات فرعية. جرب نطاقاً مختلفاً.');
-                } else {
-                    displayResults(subdomains);
-                }
-
-            } catch (err) {
-                showError('حدث خطأ في الاتصال. تأكد من اتصالك بالإنترنت.');
+                
+                const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+                document.getElementById('timeCount').innerText = duration + 's';
+                document.getElementById('stats').style.display = 'grid';
+                
+                displayResults(currentData);
+                
+            } catch(err) {
+                showError('Connection error. Please try again.');
             } finally {
-                loading.classList.remove('active');
-                progressBar.classList.remove('active');
-                progressFill.style.width = '0%';
-                searchBtn.disabled = false;
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('searchBtn').disabled = false;
             }
         }
 
-        function displayResults(subdomains) {
-            const list = document.getElementById('subdomainList');
-            const results = document.getElementById('results');
+        function displayResults(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
             
-            list.innerHTML = '';
-            
-            subdomains.forEach(sub => {
-                const li = document.createElement('li');
-                li.className = 'subdomain-item';
+            data.forEach((item, idx) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = idx + 1;
+                row.insertCell(1).innerHTML = `<strong>${item.subdomain}</strong>`;
+                row.insertCell(2).innerText = item.ip;
                 
-                const isCloudflare = sub.includes('cdn') || sub.includes('cf');
+                let statusClass = 'status-unknown';
+                if (item.status.includes('Alive')) statusClass = 'status-up';
+                else if (item.status.includes('Down')) statusClass = 'status-down';
+                row.insertCell(3).innerHTML = `<span class="status-badge ${statusClass}">${item.status}</span>`;
                 
-                li.innerHTML = `
-                    <span class="subdomain-name">${sub}</span>
-                    <div class="subdomain-meta">
-                        <span class="badge active"><i class="fas fa-check"></i> نشط</span>
-                        ${isCloudflare ? '<span class="badge cloudflare"><i class="fas fa-cloud"></i> CF</span>' : ''}
-                        <a href="https://${sub}" target="_blank" style="color: #00d4ff; text-decoration: none;">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
+                const actions = row.insertCell(4);
+                actions.innerHTML = `
+                    <div class="action-icons">
+                        <i class="fas fa-copy" title="Copy Subdomain" onclick="copyToClipboard('${item.subdomain}')"></i>
+                        <i class="fas fa-chart-line" title="Copy IP" onclick="copyToClipboard('${item.ip}')"></i>
+                        <i class="fas fa-external-link-alt" title="Open" onclick="window.open('https://${item.subdomain}', '_blank')"></i>
                     </div>
                 `;
-                
-                list.appendChild(li);
             });
             
-            results.classList.add('active');
+            document.getElementById('results').classList.add('active');
         }
 
-        function showError(message) {
-            const error = document.getElementById('error');
-            document.getElementById('errorText').textContent = message;
-            error.classList.add('active');
+        async function reverseIPLookup() {
+            const ip = document.getElementById('ipInput').value.trim();
+            if (!ip) {
+                showError('Please enter an IP address');
+                return;
+            }
+            try {
+                const res = await fetch(`https://dns.google/resolve?name=${ip}&type=PTR`);
+                const data = await res.json();
+                if (data.Answer && data.Answer[0]) {
+                    const hostname = data.Answer[0].data;
+                    showToast(`Hostname: ${hostname}`);
+                } else {
+                    showToast('No PTR record found for this IP');
+                }
+            } catch(e) {
+                showError('Reverse lookup failed');
+            }
         }
 
-        function exportResults() {
-            if (currentResults.length === 0) return;
-            
-            const text = currentResults.join('\n');
-            const blob = new Blob([text], { type: 'text/plain' });
+        function copyAllSubdomains() {
+            if (currentData.length === 0) {
+                showError('No data to copy');
+                return;
+            }
+            const subdomainsOnly = currentData.map(item => item.subdomain).join('\n');
+            copyToClipboard(subdomainsOnly);
+            showToast(`${currentData.length} subdomains copied!`);
+        }
+
+        function exportTXT() {
+            if (currentData.length === 0) return;
+            let content = "# Subdomain Finder Results - Mahboub Million\n";
+            content += `# Date: ${new Date().toLocaleString()}\n`;
+            content += `# Total: ${currentData.length}\n\n`;
+            content += "SUBDOMAIN | IP | STATUS\n";
+            content += "=".repeat(50) + "\n";
+            currentData.forEach(item => {
+                content += `${item.subdomain} | ${item.ip} | ${item.status}\n`;
+            });
+            downloadFile(content, `subdomains_${Date.now()}.txt`, 'text/plain');
+        }
+
+        function exportCSV() {
+            if (currentData.length === 0) return;
+            let csv = "Subdomain,IP Address,Status\n";
+            currentData.forEach(item => {
+                csv += `"${item.subdomain}","${item.ip}","${item.status}"\n`;
+            });
+            downloadFile(csv, `subdomains_${Date.now()}.csv`, 'text/csv');
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            
-            const domain = document.getElementById('domainInput').value.trim();
             a.href = url;
-            a.download = `subdomains-${domain}.txt`;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            // إظهار إشعار
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            showToast(`Exported: ${filename}`);
         }
 
-        // البحث عند الضغط على Enter
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Copied: ${text.substring(0, 50)}`);
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function showError(msg) {
+            const errorDiv = document.getElementById('error');
+            document.getElementById('errorText').innerText = msg;
+            errorDiv.classList.add('active');
+            setTimeout(() => errorDiv.classList.remove('active'), 4000);
+        }
+
+        // Enter key search
         document.getElementById('domainInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') findSubdomains();
         });
+        document.getElementById('ipInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') reverseIPLookup();
+        });
     </script>
 </body>
-</html>
-
+    </html>
