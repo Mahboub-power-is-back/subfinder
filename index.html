@@ -2,8 +2,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subdomain Finder Pro | Mahboub Million</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>H4CKSCAN | root@exploit</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -13,687 +13,749 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
-            color: #fff;
+            font-family: 'Courier New', 'Fira Code', 'Monaco', monospace;
+            background: #000000;
+            color: #00ff41;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* matrix rain effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: -2;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.25;
+        }
+
+        /* scanline effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 0, 0.03) 0px, rgba(0, 255, 0, 0.03) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+            z-index: 10;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 1rem 1.5rem;
+            position: relative;
+            z-index: 5;
         }
 
-        header {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #00d4ff, #ff6a00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .owner-badge {
-            display: inline-block;
-            background: rgba(255, 106, 0, 0.2);
-            border: 1px solid #ff6a00;
-            border-radius: 50px;
-            padding: 5px 20px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        .owner-badge i {
-            color: #ff6a00;
-            margin-right: 8px;
-        }
-
-        .search-box {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .input-group input {
-            flex: 1;
-            padding: 15px 25px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            min-width: 200px;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #00d4ff, #ff6a00);
-            color: #fff;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-        }
-
-        .tools-bar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-        }
-
-        .stat-card i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #ff6a00;
-        }
-
-        .stat-card h3 {
-            font-size: 1.8rem;
-        }
-
-        .results {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-        }
-
-        .results.active {
-            display: block;
-        }
-
-        .results-header {
+        /* glitch header */
+        .glitch-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 1rem;
+            padding: 1rem 0 1.5rem 0;
+            border-bottom: 1px solid #00ff4150;
+            margin-bottom: 2rem;
+        }
+        .brand-glitch {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .brand-glitch i {
+            font-size: 2rem;
+            color: #00ff41;
+            text-shadow: 0 0 5px #00ff41;
+            animation: flicker 3s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: 0 0 5px #00ff41; }
+            50% { opacity: 0.8; text-shadow: 0 0 15px #00ff41; }
+            100% { opacity: 1; text-shadow: 0 0 5px #00ff41; }
+        }
+        .brand-text h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #00ff41;
+            text-shadow: 0 0 8px #00ff41;
+        }
+        .brand-text p {
+            font-size: 0.6rem;
+            color: #00cc33;
+            letter-spacing: 1px;
+        }
+        .owner-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .owner-pill {
+            border: 1px solid #00ff4150;
+            border-radius: 0.5rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            background: #001a00;
+            font-family: monospace;
+        }
+        .telegram-pill {
+            border: 1px solid #00ff4150;
+            border-radius: 0.5rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            text-decoration: none;
+            color: #00ff41;
+            background: #001a00;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .telegram-pill:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 10px #00ff41;
         }
 
-        .btn-group {
+        /* terminal card */
+        .terminal-card {
+            background: #0a0f0a;
+            border: 1px solid #00ff4160;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        }
+        .terminal-header {
             display: flex;
-            gap: 10px;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #00ff4140;
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff3333;
+        }
+        .terminal-dot:nth-child(2) { background: #ffaa33; }
+        .terminal-dot:nth-child(3) { background: #33ff33; }
+        .terminal-title {
+            margin-left: 0.5rem;
+            font-size: 0.7rem;
+            color: #00cc33;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
         }
-
-        .copy-btn, .export-btn, .ip-lookup-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
+        .prompt {
+            color: #00ff41;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .domain-field {
+            flex: 2;
+            background: #000000;
+            border: 1px solid #00ff4160;
+            border-radius: 0.3rem;
+            padding: 0.7rem 1rem;
+            color: #00ff41;
+            font-family: monospace;
             font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
         }
-
-        .copy-btn {
-            background: #2c3e50;
-            color: #fff;
+        .domain-field:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 8px #00ff41;
         }
-
-        .export-btn {
-            background: #27ae60;
-            color: #fff;
-        }
-
-        .ip-lookup-btn {
-            background: #8e44ad;
-            color: #fff;
-        }
-
-        .subdomain-table {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            background: rgba(0, 212, 255, 0.1);
+        .scan-button {
+            background: #001a00;
+            border: 1px solid #00ff41;
+            border-radius: 0.3rem;
+            padding: 0.7rem 1.5rem;
+            font-family: monospace;
             font-weight: bold;
-            color: #00d4ff;
-        }
-
-        tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .status-up {
-            background: rgba(0, 255, 100, 0.2);
-            color: #00ff64;
-        }
-
-        .status-down {
-            background: rgba(255, 50, 50, 0.2);
-            color: #ff4444;
-        }
-
-        .status-unknown {
-            background: rgba(255, 165, 0, 0.2);
-            color: #ffa500;
-        }
-
-        .action-icons i {
-            margin: 0 5px;
+            color: #00ff41;
             cursor: pointer;
             transition: 0.2s;
         }
-
-        .action-icons i:hover {
-            transform: scale(1.1);
+        .scan-button:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 10px #00ff41;
         }
 
-        .fa-copy:hover { color: #00d4ff; }
-        .fa-chart-line:hover { color: #ff6a00; }
+        .toggle-line {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .toggle-opt {
+            border: 1px solid #00ff4160;
+            border-radius: 0.3rem;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #001100;
+        }
 
-        .loading {
+        .action-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #00ff4140;
+        }
+        .action-item {
+            background: #001100;
+            border: 1px solid #00ff4160;
+            border-radius: 0.3rem;
+            padding: 0.4rem 1rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-family: monospace;
+            color: #00ff41;
+            transition: 0.1s;
+        }
+        .action-item:hover {
+            border-color: #00ff41;
+            box-shadow: 0 0 5px #00ff41;
+        }
+
+        .progress-line {
+            background: #001a00;
+            height: 2px;
+            border-radius: 0;
+            margin: 1rem 0;
+            display: none;
+        }
+        .progress-line-fill {
+            width: 0%;
+            height: 100%;
+            background: #00ff41;
+            box-shadow: 0 0 5px #00ff41;
+        }
+
+        /* stats hacker style */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+        .stat-block {
+            background: #0a0f0a;
+            border: 1px solid #00ff4160;
+            border-radius: 0.3rem;
+            padding: 0.8rem;
             text-align: center;
-            padding: 40px;
+        }
+        .stat-block i {
+            font-size: 1.2rem;
+            color: #00ff41;
+        }
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff41;
+            text-shadow: 0 0 3px #00ff41;
+        }
+        .stat-label {
+            font-size: 0.55rem;
+            color: #88ff88;
+            text-transform: uppercase;
+        }
+
+        /* results matrix table */
+        .results-panel {
+            background: #0a0f0a;
+            border: 1px solid #00ff4160;
+            border-radius: 0.3rem;
+            padding: 1rem;
+            margin-top: 1rem;
             display: none;
         }
-
-        .loading.active {
+        .results-panel.active {
             display: block;
         }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #ff6a00;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        .table-scroll {
+            overflow-x: auto;
+            max-height: 420px;
+            overflow-y: auto;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            font-family: monospace;
         }
-
-        .error {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
+        th {
+            text-align: left;
+            padding: 0.6rem;
+            background: #001a00;
+            color: #00ff41;
+            border-bottom: 1px solid #00ff4160;
+            position: sticky;
+            top: 0;
+        }
+        td {
+            padding: 0.6rem;
+            border-bottom: 1px solid #00ff4120;
+        }
+        tr:hover td {
+            background: #00ff4108;
+        }
+        .host-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .cdn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border-radius: 2px;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.55rem;
+            font-family: monospace;
+        }
+        .cdn-cloudflare {
+            background: #1a3300;
+            border: 0.5px solid #f6821f;
+            color: #f6821f;
+        }
+        .cdn-cloudfront {
+            background: #1a0f0f;
+            border: 0.5px solid #ff6b6b;
             color: #ff6b6b;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
+        }
+        .host-text {
+            color: #00ff41;
+        }
+        .port-badge {
+            background: #001a00;
+            border: 0.5px solid #00ff4160;
+            border-radius: 2px;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.6rem;
+            display: inline-block;
+            margin: 0.1rem;
+            cursor: pointer;
+        }
+        .action-icons i {
+            margin: 0 4px;
+            cursor: pointer;
+            color: #33ff33;
+        }
+        .action-icons i:hover {
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .loader-terminal {
+            text-align: center;
+            padding: 2rem;
             display: none;
         }
-
-        .error.active {
+        .loader-terminal.active {
             display: block;
         }
+        .ascii-spinner {
+            font-size: 1.2rem;
+            color: #00ff41;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; text-shadow: 0 0 2px #00ff41; }
+            50% { opacity: 0.5; text-shadow: 0 0 10px #00ff41; }
+        }
 
-        .toast {
+        .error-box {
+            background: #1a0000;
+            border-left: 3px solid #ff3333;
+            padding: 0.5rem 1rem;
+            margin: 1rem 0;
+            display: none;
+            color: #ff8888;
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+        .toast-terminal {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #ff6a00;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: bold;
+            transform: translateX(-50%);
+            background: #001a00;
+            border: 1px solid #00ff41;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.7rem;
             opacity: 0;
-            transition: all 0.3s;
+            transition: 0.2s;
             z-index: 1000;
+            font-family: monospace;
+            white-space: nowrap;
         }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
         footer {
             text-align: center;
-            padding: 30px;
-            color: #666;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 30px;
+            padding: 1rem 0;
+            font-size: 0.55rem;
+            color: #228822;
+            border-top: 1px solid #00ff4120;
+            margin-top: 1.5rem;
         }
 
-        @media (max-width: 768px) {
-            th, td {
-                font-size: 0.8rem;
-                padding: 8px;
-            }
-            .btn {
-                padding: 10px 20px;
-            }
+        @media (max-width: 680px) {
+            .stat-number { font-size: 1.1rem; }
+            .brand-text h1 { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-network-wired"></i> Subdomain Finder Pro</h1>
-            <div class="owner-badge">
-                <i class="fas fa-crown"></i> Created by: Mahboub Million Owner
-            </div>
-            <p>Discover subdomains, resolve IPs, check status & export results</p>
-        </header>
+<div class="matrix-bg"></div>
+<canvas id="matrixCanvas"></canvas>
+<div class="scanline"></div>
 
-        <div class="search-box">
-            <div class="input-group">
-                <input type="text" id="domainInput" placeholder="Enter domain (e.g., example.com)" autocomplete="off">
-                <button class="btn" id="searchBtn" onclick="findSubdomains()">
-                    <i class="fas fa-search"></i> Find Subdomains
-                </button>
-            </div>
-
-            <div class="tools-bar">
-                <input type="text" id="ipInput" placeholder="IP to Hostname (e.g., 8.8.8.8)" style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
-                <button class="btn btn-secondary" onclick="reverseIPLookup()">
-                    <i class="fas fa-exchange-alt"></i> IP → Hostname
-                </button>
-                <button class="btn btn-secondary" onclick="copyAllSubdomains()">
-                    <i class="fas fa-copy"></i> Copy All
-                </button>
-                <button class="btn btn-secondary" onclick="exportTXT()">
-                    <i class="fas fa-file-alt"></i> Export .txt
-                </button>
-                <button class="btn btn-secondary" onclick="exportCSV()">
-                    <i class="fas fa-table"></i> Export CSV
-                </button>
-            </div>
-
-            <div class="stats" id="stats" style="display: none;">
-                <div class="stat-card">
-                    <i class="fas fa-globe"></i>
-                    <h3 id="totalCount">0</h3>
-                    <p>Total Found</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-check-circle"></i>
-                    <h3 id="aliveCount">0</h3>
-                    <p>Alive (200)</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-server"></i>
-                    <h3 id="ipCount">0</h3>
-                    <p>Resolved IPs</p>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-clock"></i>
-                    <h3 id="timeCount">0s</h3>
-                    <p>Time Taken</p>
-                </div>
+<div class="container">
+    <div class="glitch-header">
+        <div class="brand-glitch">
+            <i class="fas fa-skull"></i>
+            <div class="brand-text">
+                <h1>H4CKSC<span style="color:#00cc33;">4</span>N</h1>
+                <p>root@exploit:~# ./enum --stealth</p>
             </div>
         </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Scanning for subdomains & resolving IPs...</p>
+        <div class="owner-section">
+            <div class="owner-pill"><i class="fas fa-terminal"></i> MAHBOUB_MILLION</div>
+            <a href="https://t.me/VPSPLUSMODE" target="_blank" class="telegram-pill"><i class="fab fa-telegram"></i> [channel]</a>
         </div>
-
-        <div class="error" id="error">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="errorText">Error occurred</span>
-        </div>
-
-        <div class="results" id="results">
-            <div class="results-header">
-                <h2><i class="fas fa-list-ul"></i> Results (Subdomain | IP | Status)</h2>
-                <div class="btn-group">
-                    <button class="copy-btn" onclick="copyAllSubdomains()"><i class="fas fa-copy"></i> Copy All</button>
-                    <button class="export-btn" onclick="exportTXT()"><i class="fas fa-file-alt"></i> TXT</button>
-                    <button class="export-btn" onclick="exportCSV()"><i class="fas fa-table"></i> CSV</button>
-                </div>
-            </div>
-            <div class="subdomain-table">
-                <table id="resultsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Subdomain</th>
-                            <th>IP Address</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <footer>
-            <p><i class="fas fa-shield-alt"></i> Subdomain Finder Pro | Mahboub Million Security Tools</p>
-            <p style="font-size:0.8rem;">Uses Certificate Transparency Logs & DNS Enumeration | Data for security research only</p>
-        </footer>
     </div>
 
-    <div class="toast" id="toast">Copied to clipboard!</div>
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span class="terminal-title">h4ckscan@exploit:~</span>
+        </div>
 
-    <script>
-        let currentData = []; // Store {subdomain, ip, status}
+        <div class="input-line">
+            <span class="prompt">$></span>
+            <input type="text" id="targetDomain" class="domain-field" placeholder="target.com" autocomplete="off">
+            <button class="scan-button" id="scanBtn" onclick="runDiscovery()"><i class="fas fa-bolt"></i> EXPLOIT</button>
+        </div>
 
-        // API Sources
-        async function fetchFromCRT(domain) {
-            try {
-                const res = await fetch(`https://crt.sh/?q=%.${domain}&output=json`);
-                const data = await res.json();
-                const subs = new Set();
-                data.forEach(entry => {
-                    const names = entry.name_value.split('\n');
-                    names.forEach(name => {
-                        let clean = name.trim().toLowerCase();
-                        if (clean && clean.endsWith(domain) && clean !== domain) {
-                            subs.add(clean);
-                        }
-                    });
-                });
-                return Array.from(subs);
-            } catch(e) { return []; }
+        <div class="toggle-line">
+            <label class="toggle-opt"><input type="checkbox" id="enableResolve" checked> [IP_RESOLVE]</label>
+            <label class="toggle-opt"><input type="checkbox" id="enablePorts"> [PORT_PROBE]</label>
+        </div>
+
+        <div class="action-line">
+            <span class="prompt" style="font-size:0.7rem;">#</span>
+            <input type="text" id="reverseIpInput" placeholder="IP → hostname" style="background:#000; border:1px solid #00ff4160; border-radius:0.2rem; padding:0.3rem 0.8rem; color:#00ff41; font-family:monospace; font-size:0.65rem; flex:1;">
+            <button class="action-item" onclick="reverseLookup()"><i class="fas fa-arrow-right-arrow-left"></i> REVERSE</button>
+            <button class="action-item" onclick="copyAllHosts()"><i class="fas fa-copy"></i> CP_ALL</button>
+            <button class="action-item" onclick="exportToTxt()"><i class="fas fa-file-lines"></i> TXT</button>
+            <button class="action-item" onclick="exportToCsv()"><i class="fas fa-table"></i> CSV</button>
+        </div>
+
+        <div class="progress-line" id="progressContainer"><div class="progress-line-fill" id="progressFill"></div></div>
+
+        <div class="stats-grid" id="statsBoard" style="display: none;">
+            <div class="stat-block"><i class="fas fa-satellite-dish"></i><div class="stat-number" id="totalHosts">0</div><div class="stat-label">ASSETS</div></div>
+            <div class="stat-block"><i class="fas fa-pulse"></i><div class="stat-number" id="activeHostsCount">0</div><div class="stat-label">OPEN_PORTS</div></div>
+            <div class="stat-block"><i class="fas fa-microchip"></i><div class="stat-number" id="resolvedIpsCount">0</div><div class="stat-label">RESOLVED</div></div>
+            <div class="stat-block"><i class="fas fa-plug"></i><div class="stat-number" id="totalOpenPortsCount">0</div><div class="stat-label">TOTAL_PORTS</div></div>
+            <div class="stat-block"><i class="fas fa-hourglass-half"></i><div class="stat-number" id="durationTime">0s</div><div class="stat-label">ELAPSED</div></div>
+        </div>
+    </div>
+
+    <div class="loader-terminal" id="loadingOverlay">
+        <div class="ascii-spinner">
+            <i class="fas fa-spinner fa-pulse"></i> [SCANNING] harvesting intelligence...
+        </div>
+        <p id="loaderText" style="font-size:0.7rem; margin-top:0.5rem;">initializing exploit vectors</p>
+    </div>
+
+    <div class="error-box" id="errorToast"><span id="errorMsg"></span></div>
+
+    <div class="results-panel" id="resultsPanel">
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>HOSTNAME</th><th>IP</th><th>PORTS</th><th>ACTIONS</th></tr>
+                </thead>
+                <tbody id="resultsTbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <footer>H4CKSCAN v2.0 · encrypted channel · stealth OSINT framework</footer>
+</div>
+<div class="toast-terminal" id="globalToast">[DONE]</div>
+
+<script>
+    // Matrix Rain Animation
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const chars = "01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for(let i = 0; i < columns; i++) drops[i] = 1;
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#0f8';
+        ctx.font = fontSize + 'px monospace';
+        for(let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
         }
+    }
+    setInterval(drawMatrix, 35);
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
-        async function fetchFromHackerTarget(domain) {
-            try {
-                const res = await fetch(`https://api.hackertarget.com/hostsearch/?q=${domain}`);
-                const text = await res.text();
-                if (text.includes('error')) return [];
-                return text.split('\n').map(line => line.split(',')[0]).filter(s => s && s.includes('.'));
-            } catch(e) { return []; }
+    let currentData = [];
+    const SCAN_PORTS = [80, 443, 22, 21, 25, 3306, 5432, 6379, 8080, 8443, 3389, 5900];
+    const PORT_LABEL = {80:'HTTP',443:'HTTPS',22:'SSH',21:'FTP',25:'SMTP',3306:'MySQL',5432:'Postgres',6379:'Redis',8080:'HTTP-alt',8443:'HTTPS-alt',3389:'RDP',5900:'VNC'};
+
+    // Hidden intelligence sources
+    async function srcCrtsh(d){
+        try{ let r=await fetch(`https://crt.sh/?q=%.${d}&output=json`); let arr=await r.json(); let set=new Set();
+            if(Array.isArray(arr)) arr.forEach(e=>{ if(e.name_value) e.name_value.split('\n').forEach(n=>{ let c=n.trim().toLowerCase(); if(c && c.endsWith(d) && c!==d) set.add(c); })});
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcAlien(d){
+        try{ let r=await fetch(`https://otx.alienvault.com/api/v1/indicators/domain/${d}/passive_dns`); let j=await r.json(); let set=new Set();
+            if(j.passive_dns) j.passive_dns.forEach(rec=>{ if(rec.hostname && rec.hostname.endsWith(d)) set.add(rec.hostname.toLowerCase()); });
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcBuffer(d){
+        try{ let r=await fetch(`https://dns.bufferover.run/dns?q=.${d}`); let j=await r.json(); let set=new Set();
+            if(j.FDNS_A) j.FDNS_A.forEach(rec=>{ if(rec[0]){ let c=rec[0].toLowerCase(); if(c.endsWith(d)) set.add(c); } });
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcHacker(d){
+        try{ let r=await fetch(`https://api.hackertarget.com/hostsearch/?q=${d}`); let txt=await r.text(); if(txt.includes('error')) return [];
+            return txt.split('\n').map(l=>l.split(',')[0]).filter(s=>s && s.includes('.'));
+        } catch(e){ return []; }
+    }
+    async function srcCertSpot(d){
+        try{ let r=await fetch(`https://api.certspotter.com/v1/issuances?domain=${d}&include_subdomains=true&expand=dns_names`); let j=await r.json(); let set=new Set();
+            if(Array.isArray(j)) j.forEach(e=>{ if(e.dns_names) e.dns_names.forEach(name=>{ let c=name.toLowerCase(); if(c.endsWith(d) && c!==d) set.add(c); })});
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcDumpster(d){
+        try{ let r=await fetch(`https://dnsdumpster.com/static/map/${d}`); let html=await r.text(); let set=new Set();
+            let re=new RegExp(`([a-zA-Z0-9_.-]+\\.${d.replace(/\./g,'\\.')})`,'gi'); let m;
+            while((m=re.exec(html))!==null) set.add(m[1].toLowerCase());
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcRapid(d){
+        try{ let r=await fetch(`https://rapiddns.io/subdomain/${d}?full=1`); let html=await r.text(); let set=new Set();
+            let re=new RegExp(`([a-zA-Z0-9_.-]+\\.${d.replace(/\./g,'\\.')})`,'gi'); let m;
+            while((m=re.exec(html))!==null) set.add(m[1].toLowerCase());
+            return [...set];
+        } catch(e){ return []; }
+    }
+    async function srcAnubis(d){
+        try{ let r=await fetch(`https://jldc.me/anubis/subdomains/${d}`); let j=await r.json(); if(Array.isArray(j)) return j.filter(s=>s && s.endsWith(d)).map(s=>s.toLowerCase()); return []; } catch(e){ return []; }
+    }
+
+    function detectCDN(hostname, ip = null) {
+        const hostLower = hostname.toLowerCase();
+        if (hostLower.includes('cloudfront.net') || (ip && ip.includes('cloudfront'))) {
+            return { type: 'cloudfront', name: 'CFRONT', icon: 'fab fa-aws' };
         }
-
-        async function resolveIP(subdomain) {
-            try {
-                const res = await fetch(`https://dns.google/resolve?name=${subdomain}&type=A`);
-                const data = await res.json();
-                if (data.Answer && data.Answer.length > 0) {
-                    const ip = data.Answer[0].data;
-                    return ip;
-                }
-                return 'No A Record';
-            } catch(e) {
-                return 'DNS Error';
-            }
+        if (hostLower.includes('cloudflare.com') || hostLower.includes('cdn.cloudflare') || 
+            (ip && (ip.includes('cloudflare') || ip.startsWith('104.16.') || ip.startsWith('104.17.')))) {
+            return { type: 'cloudflare', name: 'CF', icon: 'fab fa-cloudflare' };
         }
+        return null;
+    }
 
-        async function checkStatus(url) {
-            try {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 5000);
-                const res = await fetch(`https://${url}`, { method: 'HEAD', mode: 'no-cors', signal: controller.signal });
-                clearTimeout(timeout);
-                return 'Alive (200)';
-            } catch(e) {
-                return 'Down/Timeout';
-            }
+    function getCDNHtml(hostname, ip) {
+        const cdn = detectCDN(hostname, ip);
+        if (!cdn) return '';
+        if (cdn.type === 'cloudflare') {
+            return `<span class="cdn-badge cdn-cloudflare"><i class="${cdn.icon}"></i> ${cdn.name}</span>`;
         }
-
-        async function findSubdomains() {
-            const domain = document.getElementById('domainInput').value.trim();
-            if (!domain) {
-                showError('Please enter a valid domain');
-                return;
-            }
-
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('results').classList.remove('active');
-            document.getElementById('error').classList.remove('active');
-            document.getElementById('stats').style.display = 'none';
-            document.getElementById('searchBtn').disabled = true;
-            
-            const startTime = Date.now();
-
-            try {
-                // Fetch from multiple sources
-                const [crtSubs, htSubs] = await Promise.all([
-                    fetchFromCRT(domain),
-                    fetchFromHackerTarget(domain)
-                ]);
-                
-                let allSubs = new Set([...crtSubs, ...htSubs]);
-                let subdomainArray = Array.from(allSubs).sort();
-                
-                if (subdomainArray.length === 0) {
-                    showError('No subdomains found. Try a different domain.');
-                    document.getElementById('loading').classList.remove('active');
-                    document.getElementById('searchBtn').disabled = false;
-                    return;
-                }
-
-                // Resolve IPs and check status for each (limit to 50 for performance)
-                const limited = subdomainArray.slice(0, 80);
-                currentData = [];
-                
-                let aliveCount = 0;
-                let resolvedCount = 0;
-                
-                for (let i = 0; i < limited.length; i++) {
-                    const sub = limited[i];
-                    const ip = await resolveIP(sub);
-                    if (ip !== 'No A Record' && ip !== 'DNS Error') resolvedCount++;
-                    const status = await checkStatus(sub);
-                    if (status.includes('Alive')) aliveCount++;
-                    
-                    currentData.push({
-                        subdomain: sub,
-                        ip: ip,
-                        status: status
-                    });
-                    
-                    // Update progress in UI
-                    document.getElementById('totalCount').innerText = limited.length;
-                    document.getElementById('aliveCount').innerText = aliveCount;
-                    document.getElementById('ipCount').innerText = resolvedCount;
-                }
-                
-                const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-                document.getElementById('timeCount').innerText = duration + 's';
-                document.getElementById('stats').style.display = 'grid';
-                
-                displayResults(currentData);
-                
-            } catch(err) {
-                showError('Connection error. Please try again.');
-            } finally {
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('searchBtn').disabled = false;
-            }
+        if (cdn.type === 'cloudfront') {
+            return `<span class="cdn-badge cdn-cloudfront"><i class="${cdn.icon}"></i> ${cdn.name}</span>`;
         }
+        return '';
+    }
 
-        function displayResults(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            
-            data.forEach((item, idx) => {
-                const row = tbody.insertRow();
-                row.insertCell(0).innerText = idx + 1;
-                row.insertCell(1).innerHTML = `<strong>${item.subdomain}</strong>`;
-                row.insertCell(2).innerText = item.ip;
-                
-                let statusClass = 'status-unknown';
-                if (item.status.includes('Alive')) statusClass = 'status-up';
-                else if (item.status.includes('Down')) statusClass = 'status-down';
-                row.insertCell(3).innerHTML = `<span class="status-badge ${statusClass}">${item.status}</span>`;
-                
-                const actions = row.insertCell(4);
-                actions.innerHTML = `
-                    <div class="action-icons">
-                        <i class="fas fa-copy" title="Copy Subdomain" onclick="copyToClipboard('${item.subdomain}')"></i>
-                        <i class="fas fa-chart-line" title="Copy IP" onclick="copyToClipboard('${item.ip}')"></i>
-                        <i class="fas fa-external-link-alt" title="Open" onclick="window.open('https://${item.subdomain}', '_blank')"></i>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('results').classList.add('active');
+    async function collectSubdomains(domain){
+        let functions = [srcCrtsh, srcAlien, srcBuffer, srcHacker, srcCertSpot, srcDumpster, srcRapid, srcAnubis];
+        let combined = new Set();
+        let done = 0;
+        for(let fn of functions){
+            try{ let res = await fn(domain); res.forEach(x=>combined.add(x)); } catch(e){}
+            done++;
+            let percent = (done / functions.length) * 45;
+            document.getElementById('progressFill').style.width = `${percent}%`;
         }
+        return [...combined].sort();
+    }
 
-        async function reverseIPLookup() {
-            const ip = document.getElementById('ipInput').value.trim();
-            if (!ip) {
-                showError('Please enter an IP address');
-                return;
-            }
-            try {
-                const res = await fetch(`https://dns.google/resolve?name=${ip}&type=PTR`);
-                const data = await res.json();
-                if (data.Answer && data.Answer[0]) {
-                    const hostname = data.Answer[0].data;
-                    showToast(`Hostname: ${hostname}`);
-                } else {
-                    showToast('No PTR record found for this IP');
-                }
-            } catch(e) {
-                showError('Reverse lookup failed');
-            }
-        }
-
-        function copyAllSubdomains() {
-            if (currentData.length === 0) {
-                showError('No data to copy');
-                return;
-            }
-            const subdomainsOnly = currentData.map(item => item.subdomain).join('\n');
-            copyToClipboard(subdomainsOnly);
-            showToast(`${currentData.length} subdomains copied!`);
-        }
-
-        function exportTXT() {
-            if (currentData.length === 0) return;
-            let content = "# Subdomain Finder Results - Mahboub Million\n";
-            content += `# Date: ${new Date().toLocaleString()}\n`;
-            content += `# Total: ${currentData.length}\n\n`;
-            content += "SUBDOMAIN | IP | STATUS\n";
-            content += "=".repeat(50) + "\n";
-            currentData.forEach(item => {
-                content += `${item.subdomain} | ${item.ip} | ${item.status}\n`;
-            });
-            downloadFile(content, `subdomains_${Date.now()}.txt`, 'text/plain');
-        }
-
-        function exportCSV() {
-            if (currentData.length === 0) return;
-            let csv = "Subdomain,IP Address,Status\n";
-            currentData.forEach(item => {
-                csv += `"${item.subdomain}","${item.ip}","${item.status}"\n`;
-            });
-            downloadFile(csv, `subdomains_${Date.now()}.csv`, 'text/csv');
-        }
-
-        function downloadFile(content, filename, mimeType) {
-            const blob = new Blob([content], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast(`Exported: ${filename}`);
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`Copied: ${text.substring(0, 50)}`);
-            });
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
-
-        function showError(msg) {
-            const errorDiv = document.getElementById('error');
-            document.getElementById('errorText').innerText = msg;
-            errorDiv.classList.add('active');
-            setTimeout(() => errorDiv.classList.remove('active'), 4000);
-        }
-
-        // Enter key search
-        document.getElementById('domainInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') findSubdomains();
+    async function resolveDns(host){
+        try{ let r=await fetch(`https://dns.google/resolve?name=${host}&type=A`); let d=await r.json(); if(d.Answer && d.Answer[0]) return d.Answer[0].data; return '-'; } catch(e){ return '-';}
+    }
+    async function checkPortOpen(host, port){
+        return new Promise(resolve=>{
+            let timeout = setTimeout(()=>resolve(false), 1600);
+            let protocol = port===443?'https':'http';
+            let img = new Image();
+            img.onload=()=>{clearTimeout(timeout); resolve(true);};
+            img.onerror=()=>{clearTimeout(timeout); resolve(false);};
+            img.src = `${protocol}://${host}:${port}/favicon.ico?_=${Date.now()}`;
         });
-        document.getElementById('ipInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') reverseIPLookup();
+    }
+    async function enumeratePorts(host){
+        let open = [];
+        for(let p of SCAN_PORTS) if(await checkPortOpen(host,p)) open.push(p);
+        return open;
+    }
+
+    async function processEntries(list){
+        let results = [];
+        let doResolve = document.getElementById('enableResolve').checked;
+        let doPorts = document.getElementById('enablePorts').checked;
+        let total = list.length;
+        for(let i=0;i<total;i++){
+            let h = list[i];
+            let ip = '-', ports = [];
+            if(doResolve) ip = await resolveDns(h);
+            if(doPorts && ip !== '-') ports = await enumeratePorts(h);
+            results.push({host:h, ip, ports});
+            let percent = 45 + ((i+1)/total)*55;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('resolvedIpsCount').innerText = i+1;
+            let totalPorts = results.reduce((acc,cur)=>acc+cur.ports.length,0);
+            document.getElementById('totalOpenPortsCount').innerText = totalPorts;
+            document.getElementById('loaderText').innerHTML = `[>] analyzing ${i+1}/${total} · ${totalPorts} open ports`;
+        }
+        return results;
+    }
+
+    async function runDiscovery(){
+        let domain = document.getElementById('targetDomain').value.trim().toLowerCase();
+        if(!domain) return showError('[!] enter target domain');
+        document.getElementById('loadingOverlay').classList.add('active');
+        document.getElementById('resultsPanel').classList.remove('active');
+        document.getElementById('statsBoard').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'block';
+        document.getElementById('scanBtn').disabled = true;
+        document.getElementById('progressFill').style.width = '0%';
+        let startAt = Date.now();
+
+        try{
+            document.getElementById('loaderText').innerHTML = '[>] harvesting passive signals ...';
+            let subList = await collectSubdomains(domain);
+            if(subList.length === 0){ showError('[X] no assets found'); resetUI(); return; }
+            subList = [...new Set(subList)];
+            document.getElementById('totalHosts').innerText = subList.length;
+            let enriched = await processEntries(subList);
+            currentData = enriched;
+            let totalOpen = enriched.reduce((s,x)=>s+x.ports.length,0);
+            document.getElementById('totalOpenPortsCount').innerText = totalOpen;
+            let activeWithPorts = enriched.filter(x=>x.ports.length>0).length;
+            document.getElementById('activeHostsCount').innerText = activeWithPorts;
+            if(!document.getElementById('enableResolve').checked) document.getElementById('resolvedIpsCount').innerText = 'off';
+            if(!document.getElementById('enablePorts').checked){
+                document.getElementById('totalOpenPortsCount').innerText = 'off';
+                document.getElementById('activeHostsCount').innerText = 'N/A';
+            }
+            let duration = ((Date.now()-startAt)/1000).toFixed(1);
+            document.getElementById('durationTime').innerText = duration+'s';
+            document.getElementById('statsBoard').style.display = 'grid';
+            renderResults(enriched);
+            showToast(`[+] completed · ${subList.length} assets`);
+        } catch(e){ showError('[X] engine error'); }
+        finally{ resetUI(); }
+        function resetUI(){ document.getElementById('loadingOverlay').classList.remove('active'); document.getElementById('progressContainer').style.display='none'; document.getElementById('scanBtn').disabled=false; }
+    }
+
+    function renderResults(data){
+        let tbody = document.getElementById('resultsTbody');
+        tbody.innerHTML = '';
+        data.forEach((item, idx)=>{
+            let row = tbody.insertRow();
+            row.insertCell(0).innerText = idx+1;
+            let cdnIcon = getCDNHtml(item.host, item.ip);
+            let hostHtml = `<span class="host-text">${item.host}</span>`;
+            if(cdnIcon) hostHtml = `<div class="host-cell">${hostHtml} ${cdnIcon}</div>`;
+            else hostHtml = `<div class="host-cell">${hostHtml}</div>`;
+            row.insertCell(1).innerHTML = hostHtml;
+            row.insertCell(2).innerText = item.ip;
+            let portsHtml = '';
+            if(item.ports.length===0) portsHtml = '<span style="color:#3a6e3a;">—</span>';
+            else portsHtml = item.ports.map(p=>`<span class="port-badge" onclick="copyClipboard('${p}')" title="${PORT_LABEL[p]||'port'}">${p}</span>`).join('');
+            row.insertCell(3).innerHTML = portsHtml;
+            row.insertCell(4).innerHTML = `<div class="action-icons"><i class="fas fa-copy" onclick="copyClipboard('${item.host}')"></i><i class="fas fa-chart-line" onclick="copyClipboard('${item.ip}')"></i><i class="fas fa-external-link-alt" onclick="window.open('https://${item.host}')"></i></div>`;
         });
-    </script>
+        document.getElementById('resultsPanel').classList.add('active');
+    }
+
+    async function reverseLookup(){
+        let ip = document.getElementById('reverseIpInput').value.trim();
+        if(!ip) return showError('[!] enter ip');
+        try{ let r=await fetch(`https://dns.google/resolve?name=${ip}&type=PTR`); let d=await r.json(); if(d.Answer && d.Answer[0]) showToast(`host: ${d.Answer[0].data}`); else showToast('no ptr record'); } catch(e){ showError('[X] reverse failed'); }
+    }
+    function copyAllHosts(){ if(!currentData.length) return; let str = currentData.map(x=>x.host).join('\n'); copyClipboard(str); showToast(`[+] ${currentData.length} hosts copied`); }
+    function exportToTxt(){
+        if(!currentData.length) return;
+        let out = `# H4CKSCAN · ${new Date().toLocaleString()}\n# total: ${currentData.length}\n\n`;
+        currentData.forEach(x=>out+=`${x.host} | ${x.ip} | ports: ${x.ports.length?x.ports.join(','):'none'}\n`);
+        downloadFile(out, `h4ckscan_${Date.now()}.txt`, 'text/plain');
+    }
+    function exportToCsv(){
+        if(!currentData.length) return;
+        let csv = "Host,IP,Ports\n";
+        currentData.forEach(x=>csv+=`"${x.host}","${x.ip}","${x.ports.join(';')}"\n`);
+        downloadFile(csv, `h4ckscan_${Date.now()}.csv`, 'text/csv');
+    }
+    function downloadFile(content,filename,mime){ let a=document.createElement('a'); let blob=new Blob([content],{type:mime}); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); URL.revokeObjectURL(a.href); showToast(`[+] exported ${filename}`); }
+    function copyClipboard(text){ navigator.clipboard.writeText(text); showToast('[+] copied to clipboard'); }
+    function showToast(msg){ let t=document.getElementById('globalToast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+    function showError(msg){ let e=document.getElementById('errorToast'); document.getElementById('errorMsg').innerHTML=msg; e.classList.add('active'); setTimeout(()=>e.classList.remove('active'),3200); }
+
+    document.getElementById('targetDomain').addEventListener('keypress', e=>{if(e.key==='Enter') runDiscovery();});
+    document.getElementById('reverseIpInput').addEventListener('keypress', e=>{if(e.key==='Enter') reverseLookup();});
+</script>
 </body>
-    </html>
+</html>
